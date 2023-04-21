@@ -6,6 +6,7 @@ use App\Enum\Weekdays;
 use App\Service\PostMessageService;
 use App\Service\RetrieveEventsService;
 use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,8 @@ class PostUpdatesController extends AbstractController
         private Client $client,
         private RetrieveEventsService $retrieveEventsService,
         private PostMessageService $postMessageService,
-        private string $postUpdatesAuth
+        private string $postUpdatesAuth,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -27,10 +29,13 @@ class PostUpdatesController extends AbstractController
     public function index(Request $request): JsonResponse
     {
         $auth = $request->query->get('auth') ?? null;
+        $auth = urldecode($auth);
+
         if (
             !$this->getParameter('kernel.debug')
             && $auth !== $this->postUpdatesAuth
         ) {
+            $this->logger->info('Denied request due to wrong auth.');
             return new JsonResponse(
                 ['status' => 'error'],
                 500
