@@ -62,5 +62,9 @@
             "allow-contrib": false,
             "require": "6.2.*"
         }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "symfony/maker-bundle": "*"
     }
 }
