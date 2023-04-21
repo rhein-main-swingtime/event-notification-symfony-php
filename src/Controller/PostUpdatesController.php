@@ -43,6 +43,7 @@ class PostUpdatesController extends AbstractController
             ...$range
         );
         $out = $this->postMessageService->handleEvents($evens);
+        $out['client_ip'] = $_SERVER['REMOTE_ADDR'];
         return new JsonResponse($out);
     }
 
