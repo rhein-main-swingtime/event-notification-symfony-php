@@ -35,6 +35,9 @@ jobs:
             printf "${{ secrets.PROD_DECRYPT_PRIVATE }}" > config/secrets/prod/prod.decrypt.private.php
             sed -i 's/dev/prod/' .env
             composer install
+            cp helpers/reset_opcache.php public
+            curl https://${{ secrets.FQDN }}/reset_opcache.php
+            rm public/reset_opcache.php
 
       - name: Linking
         uses: appleboy/ssh-action@v0.1.4
@@ -48,4 +51,3 @@ jobs:
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/public ${{ secrets.FQDN }}
             echo "Deleting old builds (keeping 10)"
             ls -tp | event_notification_ | grep -v '\$' | tail -n +10 | xargs -d '\n' -r rm -r --
-            curl https://${{ secrets.FQDN }}/reset_opcache.php
