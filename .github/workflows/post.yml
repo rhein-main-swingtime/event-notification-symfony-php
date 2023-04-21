@@ -1,0 +1,15 @@
+name: DEPLOYMENT
+on:
+  schedule:
+    - cron:  '30 8 * * *' # everyday at 08:30
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  curl:
+    runs-on: ubuntu-latest
+    steps:
+    - name: curl
+      uses: wei/curl@master
+      with:
+        args: https://${{ secrets.FQDN }}/post-updates?auth=${{ secrets.POST_UPDATES_AUTH }}
