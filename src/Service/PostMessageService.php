@@ -11,8 +11,6 @@ use Longman\TelegramBot\Telegram;
 
 class PostMessageService {
 
-    private const API_DATE_FORMAT = 'Y-m-d';
-
     public function __construct(
         private Telegram $telegram,
         private string $telegramChannel,
@@ -53,10 +51,11 @@ class PostMessageService {
     }
 
     private function getIntroMessage(int $dayOfTheWeek): string {
+        $msg = '🤖🤖🤖' . PHP_EOL;
         if (Weekdays::isFriday($dayOfTheWeek)) {
-            $msg =  "Hallo, das sind eure Social Dances am Wochenende.";
+            $msg .=  "Hallo, das sind eure Social Dances am Wochenende.";
         } else {
-            $msg = "Hallo, das ist euer tägliches Swing Dance Update.";
+            $msg .= "Hallo, das ist euer tägliches Swing Dance Update.";
         }
         $msg .= PHP_EOL;
         $msg .= "See you on the dancefloor! 🫶";
@@ -78,19 +77,25 @@ class PostMessageService {
         );
     }
 
+    private function getTimeDate(DanceEvent $danceEvent, int $dayOfTheWeek): string {
+        $parts = [];
+        if (Weekdays::isFriday($dayOfTheWeek)) {
+            $parts[] = sprintf("📅 %s", Weekdays::from((int) $danceEvent->startDateTime->format('w'))->name);
+        }
+        $parts[] = sprintf("⏰ %s Uhr", $danceEvent->startDateTime->format('H:i'));
+        return implode(' ', $parts);
+    }
+
     private function createMessageFromDanceEvent(DanceEvent $danceEvent, int $dayOfTheWeek): string {
         $parts = [];
-        $parts[] = sprintf("🔥 <b>%s</b> 🔥 in <b>%s</b>", $danceEvent->summary, $danceEvent->city);
+        $parts[] = sprintf("⭐ <b>%s</b> in <b>%s</b> ⭐", $danceEvent->summary, $danceEvent->city);
         $parts[] = '';
-        if ($dayOfTheWeek === Weekdays::Freitag) {
-            $parts[] = sprintf("📅 %s", Weekdays::from((int) $danceEvent->startDateTime->format('w')));
-        }
-        $parts[] = sprintf("⏰ %s Uhr ⏰", $danceEvent->startDateTime->format('H:i'));
-        $parts[] = sprintf("🚩 %s 🚩", $danceEvent->location);
-        $parts[] = sprintf('<a href="https://rmswing.de/geteilt?%s">🔗 Mehr Infos: Klick mich! 🔗</a>', $danceEvent->id);
+        $parts[] = $this->getTimeDate($danceEvent, $dayOfTheWeek);
+        $parts[] = sprintf("📍 %s", $danceEvent->location);
+        $parts[] = '';
+        $parts[] = sprintf('<a href="https://rmswing.de/geteilt?%s">🔗 Mehr Infos: Klick mich!</a>', $danceEvent->id);
 
         return implode(PHP_EOL, $parts);
     }
-
 
 }

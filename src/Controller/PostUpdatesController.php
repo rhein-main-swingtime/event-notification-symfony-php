@@ -27,7 +27,11 @@ class PostUpdatesController extends AbstractController
     public function index(Request $request): JsonResponse
     {
         $auth = $request->query->get('auth') ?? null;
-        if (!$this->getParameter('kernel.debug') && $auth !== $this->postUpdatesAuth) {
+        if (
+            $request !== null
+            && !$this->getParameter('kernel.debug')
+            && $auth !== $this->postUpdatesAuth
+        ) {
             return new JsonResponse(
                 ['status' => 'error'],
                 500

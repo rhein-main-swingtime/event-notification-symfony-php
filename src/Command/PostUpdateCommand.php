@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
 #[AsCommand(
     name: 'app:post-update',
@@ -33,7 +34,7 @@ class PostUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->postUpdatesController->index();
+        $response = $this->postUpdatesController->index(new HttpFoundationRequest());
         foreach(json_decode($response->getContent(), true) as $element) {
            $output->writeln(
                 json_encode($element, JSON_PRETTY_PRINT)
