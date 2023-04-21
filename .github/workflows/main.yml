@@ -29,6 +29,7 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
+            set -e
             cd ${{ secrets.DEPLOYMENT_ROOT }}
             git clone --depth 1 https://github.com/rhein-main-swingtime/event-notification-symfony-php.git event_notification_${{ github.run_number }}_${{ github.sha }}
             cd event_notification_${{ github.run_number }}_${{ github.sha }}
@@ -46,6 +47,7 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
+            set -e
             cd ${{ secrets.DEPLOYMENT_ROOT }}
             rm ${{ secrets.FQDN }}
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/public ${{ secrets.FQDN }}
