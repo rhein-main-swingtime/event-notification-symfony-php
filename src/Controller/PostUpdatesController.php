@@ -29,7 +29,6 @@ class PostUpdatesController extends AbstractController
     public function index(Request $request): JsonResponse
     {
         $auth = $request->query->get('auth') ?? null;
-        $auth = urldecode($auth);
 
         if (
             !$this->getParameter('kernel.debug')
