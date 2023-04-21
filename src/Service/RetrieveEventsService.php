@@ -4,13 +4,17 @@ namespace App\Service;
 
 use App\DTO\DanceEventCollection;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Log\Logger;
 
 class RetrieveEventsService
 {
-    public function __construct(private Client $client)
-    {
-    }
+    public function __construct(
+        private Client $client,
+        private LoggerInterface $loggerInterface
+    ) {}
 
     private function transformToDTOs(string $fromApi): DanceEventCollection
     {
@@ -37,16 +41,35 @@ class RetrieveEventsService
         string $end,
         array $categories = ['socials']
     ): DanceEventCollection {
-        $response = $this->client->get(
-            'events/v1/list',
-            [
-                'query' => [
-                    'category[]' => 'socials',
-                    'from' => $start,
-                    'to' => $end,
-                ],
-            ]
-        );
+
+        $retries = 0;
+        while ($retries < 5) {
+            try {
+                $response = $this->client->get(
+                    'events/v1/list',
+                    [
+                        'query' => [
+                            'category[]' => 'socials',
+                            'from' => $start,
+                            'to' => $end,
+                        ],
+                    ]
+                );
+            } catch (GuzzleException $e) {
+                $this->loggerInterface->error(
+                    $e,
+                    [
+                        'attempt' => $retries
+                    ]
+                );
+            }
+
+            if ($response->getStatusCode() === 200) {
+                break;
+            }
+            $retries++;
+
+        }
 
         if (!$this->validateResponse($response)) {
             return [];
