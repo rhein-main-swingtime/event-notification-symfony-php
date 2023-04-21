@@ -5,7 +5,7 @@ name: POST UPDATES
 # Controls when the action will run.
 on:
   schedule:
-    - cron:  '30 3 * * *' # everyday at 03:30
+    - cron:  '30 8 * * *' # everyday at 08:30
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,4 +24,5 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
+            set -e
             curl --verbose "https://${{ secrets.FQDN }}/post-updates?auth=${{ secrets.POST_UPDATES_AUTH }}"
