@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PostUpdatesController extends AbstractController
@@ -18,12 +19,21 @@ class PostUpdatesController extends AbstractController
     public function __construct(
         private Client $client,
         private RetrieveEventsService $retrieveEventsService,
-        private PostMessageService $postMessageService
+        private PostMessageService $postMessageService,
+        private string $postUpdatesAuth
     ) {}
 
     #[Route('/post-updates', name: 'post_updates')]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $auth = $request->query->get('auth') ?? null;
+        if (!$this->getParameter('kernel.debug') && $auth !== $this->postUpdatesAuth) {
+            return new JsonResponse(
+                ['status' => 'error'],
+                500
+            );
+        }
+
         return $this->doUpdatePosting();
     }
 
