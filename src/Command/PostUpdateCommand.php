@@ -23,7 +23,7 @@ class PostUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->postUpdatesController->index(new HttpFoundationRequest());
+        $response = $this->postUpdatesController->doUpdatePosting();
         foreach (json_decode($response->getContent(), true) as $element) {
             $output->writeln(
                 json_encode($element, JSON_PRETTY_PRINT)

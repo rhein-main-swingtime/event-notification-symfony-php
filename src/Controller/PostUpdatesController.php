@@ -28,8 +28,7 @@ class PostUpdatesController extends AbstractController
     {
         $auth = $request->query->get('auth') ?? null;
         if (
-            null !== $request
-            && !$this->getParameter('kernel.debug')
+            !$this->getParameter('kernel.debug')
             && $auth !== $this->postUpdatesAuth
         ) {
             return new JsonResponse(
