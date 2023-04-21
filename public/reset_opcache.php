@@ -2,6 +2,7 @@
 header("Content-type: application/json; charset=utf-8");
 
 if ($_SERVER["REMOTE_ADDR"] !== "127.0.0.1") {
+    echo $_SERVER["REMOTE_ADDR"];
     echo json_encode(
         [
             'status' => "nope."
