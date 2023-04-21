@@ -36,7 +36,7 @@ jobs:
             printf "${{ secrets.PROD_DECRYPT_PRIVATE }}" > config/secrets/prod/prod.decrypt.private.php
             sed -i 's/dev/prod/' .env
             /bin/cp -rf helpers/reset_opcache.php public
-            composer install
+            composer --no-dev install
 
       - name: Linking
         uses: appleboy/ssh-action@v0.1.4
