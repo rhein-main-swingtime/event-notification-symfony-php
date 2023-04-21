@@ -1,30 +1,30 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\DTO;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use stdClass;
-
 /**
  *@property DanceEvent[] $danceEvents
  */
-class DanceEventCollection {
-
+class DanceEventCollection
+{
     public int $size = 0;
 
     private const DATE_TIME_FORMAT_JS = 'Y-m-d\TH:i:sP';
 
-    private function __construct(public readonly array $danceEvents){
+    private function __construct(public readonly array $danceEvents)
+    {
         $this->size = count($this->danceEvents);
     }
 
-    private static function createDateFromString(string $string): DateTimeInterface {
-        return DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT_JS, $string);
+    private static function createDateFromString(string $string): \DateTimeInterface
+    {
+        return \DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT_JS, $string);
     }
 
-    private static function createEventFromPayload(stdClass $payload) {
+    private static function createEventFromPayload(\stdClass $payload)
+    {
         return new DanceEvent(
             id: (int) $payload->id,
             eventId: $payload->event_id,
@@ -38,11 +38,13 @@ class DanceEventCollection {
         );
     }
 
-    public static function createFromPayload(array $rawEvents): self {
+    public static function createFromPayload(array $rawEvents): self
+    {
         $events = array_map(
-            fn($e) => self::createEventFromPayload($e),
+            fn ($e) => self::createEventFromPayload($e),
             $rawEvents
         );
+
         return new self($events);
     }
 }

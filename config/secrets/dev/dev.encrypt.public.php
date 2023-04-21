@@ -1,3 +1,5 @@
-<?php // dev.encrypt.public on Wed, 19 Apr 2023 20:43:18 +0000
+<?php
+
+// dev.encrypt.public on Wed, 19 Apr 2023 20:43:18 +0000
 
 return "M\x11\x13\xBA\xAA\xAB\xA0\x9E\xC0I9uG\x967\xE6\xC9\x84X\xF5\xE1\x2B\x044\xCAL\x96\x3F\xA91F\x02";

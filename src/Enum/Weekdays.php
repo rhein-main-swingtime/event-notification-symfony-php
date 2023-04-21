@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Enum;
 
-enum Weekdays: int {
+enum Weekdays: int
+{
     case Montag = 1;
     case Dienstag = 2;
     case Mittwoch = 3;
@@ -12,7 +14,8 @@ enum Weekdays: int {
     case Samstag = 6;
     case Sonntag = 0;
 
-    public static function isFriday(int $weekdayInt): bool {
-        return self::from($weekdayInt) == self::Freitag;
+    public static function isFriday(int $weekdayInt): bool
+    {
+        return self::Freitag == self::from($weekdayInt);
     }
 }

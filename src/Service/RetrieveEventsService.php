@@ -5,24 +5,27 @@ namespace App\Service;
 use App\DTO\DanceEventCollection;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 
 class RetrieveEventsService
 {
-    public function __construct(private Client $client) {}
+    public function __construct(private Client $client)
+    {
+    }
 
-    private function transformToDTOs(string $fromApi): DanceEventCollection {
+    private function transformToDTOs(string $fromApi): DanceEventCollection
+    {
         $content = json_decode($fromApi);
+
         return DanceEventCollection::createFromPayload($content->danceEvents);
     }
 
-    private function validateResponse(ResponseInterface $response): bool {
-        if ($response->getStatusCode() != 200) {
+    private function validateResponse(ResponseInterface $response): bool
+    {
+        if (200 != $response->getStatusCode()) {
             return false;
         }
 
-        if ($response->getBody()->getSize() == 0) {
+        if (0 == $response->getBody()->getSize()) {
             return false;
         }
 
@@ -34,15 +37,14 @@ class RetrieveEventsService
         string $end,
         array $categories = ['socials']
     ): DanceEventCollection {
-
         $response = $this->client->get(
             'events/v1/list',
             [
                 'query' => [
                     'category[]' => 'socials',
-                    "from" => $start,
-                    "to" => $end,
-                ]
+                    'from' => $start,
+                    'to' => $end,
+                ],
             ]
         );
 
@@ -52,5 +54,4 @@ class RetrieveEventsService
 
         return $this->transformToDTOs($response->getBody()->getContents());
     }
-
 }
