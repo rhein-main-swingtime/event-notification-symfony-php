@@ -1,4 +1,4 @@
-name: DEPLOYMENT
+name: POST UPDATES
 on:
   schedule:
     - cron:  '30 8 * * *' # everyday at 08:30
@@ -12,4 +12,4 @@ jobs:
     - name: curl
       uses: wei/curl@master
       with:
-        args: https://${{ secrets.FQDN }}/post-updates?auth=${{ secrets.POST_UPDATES_AUTH }}
+        args: --verbose "https://${{ secrets.FQDN }}/post-updates?auth=${{ secrets.POST_UPDATES_AUTH }}"
