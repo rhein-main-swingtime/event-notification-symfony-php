@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: uberspace_hosting
     steps:
-      - name: Update and Build
+      - name: Fetch
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.DEPLOYMENT_HOST }}
