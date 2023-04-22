@@ -50,6 +50,6 @@ jobs:
             rm ${{ secrets.FQDN }}
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/public ${{ secrets.FQDN }}
             curl -H 'Cache-Control: no-cache, no-store' https://${{ secrets.FQDN }}/reset_opcache.php
-            rm ${{ secrets.FQDN }}/reset_opcache.php
+            # rm ${{ secrets.FQDN }}/reset_opcache.php
             echo "Deleting old builds (keeping 10)"
             ls -tp | grep event_notification_ | grep -v '\$' | tail -n +10 | xargs -d '\n' -r rm -r --
