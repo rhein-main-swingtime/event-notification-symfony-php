@@ -59,11 +59,10 @@ class PostUpdatesController extends AbstractController
     public function generateDateRange(int $currentDate): array
     {
         $start = new \DateTimeImmutable();
-
         if (Weekdays::Freitag === Weekdays::from($currentDate)) {
             $end = new \DateTimeImmutable('+2 day');
         } else {
-            $end = new \DateTimeImmutable('tomorrow');
+            $end = new \DateTimeImmutable('today');
         }
 
         return [
