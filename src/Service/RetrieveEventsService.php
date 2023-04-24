@@ -20,7 +20,7 @@ class RetrieveEventsService
     {
         $content = json_decode($fromApi);
 
-        return DanceEventCollection::createFromPayload($content->danceEvents);
+        return DanceEventCollection::createFromPayload($content->danceEvents ?? []);
     }
 
     private function validateResponse(ResponseInterface $response): bool

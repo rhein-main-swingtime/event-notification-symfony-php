@@ -36,6 +36,16 @@ class PostMessageService
 
         $out = [];
 
+        // Handles no events returned from API and returns
+        if ($events->size === 0) {
+            $this->sendMessage(
+                $this->getNoEventsTodayMessage(),
+                $extras,
+            );
+            $this->handleExtras($extras, $out);
+            return $out;
+        }
+
         $this->sendMessage(
             $this->getIntroMessage($dayOfTheWeek),
             $extras,
@@ -63,6 +73,15 @@ class PostMessageService
         }
         $msg .= PHP_EOL;
         $msg .= 'See you on the dancefloor! 🫶';
+
+        return $msg;
+    }
+
+    private function getNoEventsTodayMessage(): string
+    {
+        $msg = '🤖🤖🤖'.PHP_EOL;
+        $msg .= 'Leider weiss ich heute von keinen Socials.' . PHP_EOL;
+        $msg .= 'Schaut doch einfach später auf https://rmswing.de vorbei.'
 
         return $msg;
     }

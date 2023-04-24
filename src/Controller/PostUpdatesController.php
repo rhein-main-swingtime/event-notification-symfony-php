@@ -47,10 +47,10 @@ class PostUpdatesController extends AbstractController
     public function doUpdatePosting(): JsonResponse
     {
         $range = $this->generateDateRange((int) date('w'));
-        $evens = $this->retrieveEventsService->retrieveByDate(
+        $events = $this->retrieveEventsService->retrieveByDate(
             ...$range
         );
-        $out = $this->postMessageService->handleEvents($evens);
+        $out = $this->postMessageService->handleEvents($events);
         $out['client_ip'] = $_SERVER['REMOTE_ADDR'] ?? null;
 
         return new JsonResponse($out);
