@@ -81,7 +81,7 @@ class PostMessageService
     {
         $msg = '🤖🤖🤖'.PHP_EOL;
         $msg .= 'Leider weiss ich heute von keinen Socials.' . PHP_EOL;
-        $msg .= 'Schaut doch einfach später auf https://rmswing.de vorbei.'
+        $msg .= 'Schaut doch einfach später auf https://rmswing.de vorbei.';
 
         return $msg;
     }
