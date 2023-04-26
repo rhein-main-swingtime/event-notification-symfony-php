@@ -57,7 +57,7 @@ jobs:
             if [ -d "${{ secrets.DEPLOYMENT_ROOT }}/event_notification_${{ github.run_number }}_${{ github.sha }}/var/log" ]; then
               rm -r ${{ secrets.DEPLOYMENT_ROOT }}/event_notification_${{ github.run_number }}_${{ github.sha }}/var/log
             fi
-            ln -s ${{ secrets.DEPLOYMENT_ROOT }}/event_notification_${{ github.run_number }}_${{ github.sha }}/var/log ${{ secrets.DEPLOYMENT_ROOT }}/event_notification/log
+            ln -s ${{ secrets.DEPLOYMENT_ROOT }}/event_notification/log ${{ secrets.DEPLOYMENT_ROOT }}/event_notification_${{ github.run_number }}_${{ github.sha }}/var/log
 
             ## Public link
             rm ${{ secrets.FQDN }}
