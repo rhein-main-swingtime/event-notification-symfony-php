@@ -49,15 +49,18 @@ jobs:
             cd ${{ secrets.DEPLOYMENT_ROOT }}
 
             # ## Linking
-            # if [ -e  "event_notification/bin" ]; then
-            #   rm -f event_notification/bin
-            # fi
-            # ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/bin event_notification/bin
+            cd event_notification
+            if [ -e  "bin" ]; then
+              rm -f bin
+            fi
+            ln -s ../event_notification_${{ github.run_number }}_${{ github.sha }}/bin ./bin
 
-            # if [ -d "event_notification_${{ github.run_number }}_${{ github.sha }}/var/log" ]; then
-            #   rm -r event_notification_${{ github.run_number }}_${{ github.sha }}/var/log
-            # fi
-            # ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/var/log event_notification/log
+            if [ -d "../event_notification_${{ github.run_number }}_${{ github.sha }}/var/log" ]; then
+              rm -r ../event_notification_${{ github.run_number }}_${{ github.sha }}/var/log
+            fi
+            ln -s ../event_notification_${{ github.run_number }}_${{ github.sha }}/var/log log
+
+            cd ..
 
             ## Public link
             rm ${{ secrets.FQDN }}
