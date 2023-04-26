@@ -49,7 +49,7 @@ jobs:
             cd ${{ secrets.DEPLOYMENT_ROOT }}
 
             ## Linking
-            if [ -L "event_notification/bin"]; then
+            if [ -L "event_notification/bin" ]; then
               rm event_notification/bin
             fi
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/bin event_notification/bin
