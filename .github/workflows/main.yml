@@ -50,7 +50,7 @@ jobs:
 
             # ## Linking
             if [ -e  "${{ secrets.DEPLOYMENT_ROOT }}/event_notification/bin" ]; then
-              rm -f bin
+              rm -f ${{ secrets.DEPLOYMENT_ROOT }}/event_notification/bin
             fi
             ln -s ${{ secrets.DEPLOYMENT_ROOT }}/event_notification_${{ github.run_number }}_${{ github.sha }}/bin ${{ secrets.DEPLOYMENT_ROOT }}/event_notification/bin
 
