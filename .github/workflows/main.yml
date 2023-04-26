@@ -51,8 +51,13 @@ jobs:
             rm ${{ secrets.FQDN }}
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/public ${{ secrets.FQDN }}
             ## Linking
-            rm event_notification/bin
+            if [ -f event_notification/bin]; then
+              rm event_notification/bin
+            fi
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/bin event_notification/bin
+            if [ -d event_notification_${{ github.run_number }}_${{ github.sha }}/var/log ]; then
+              rm -r event_notification_${{ github.run_number }}_${{ github.sha }}/var/log
+            fi
             ln -s event_notification_${{ github.run_number }}_${{ github.sha }}/var/log event_notification/log
             ## Cache reset
             curl -H 'Cache-Control: no-cache, no-store' https://${{ secrets.FQDN }}/reset_opcache.php
